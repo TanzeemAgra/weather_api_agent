@@ -1,0 +1,7 @@
+streamlit
+langchain
+openai
+wikipedia
+fpdf
+requests
+langchain-community
