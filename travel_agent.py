@@ -30,12 +30,37 @@ def get_weather(location):
         response = requests.get(url).json()
         if response.get("main"):
             temp = response["main"]["temp"]
-            desc = response["whether"][0]["describtion"]
+            desc = response["weather"][0]["description"]
             return f"The current weather in {location} is {temp}°C with {desc}."
         else:
-            return "Couldn't fetach weather"
+            return "Couldn't fetch weather"
     except Exception as e:
         return f"Error fetching weather: {e}"
     
+#PDF Exporter
+def export_to_pdf(question, answer):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 10, f"Travel Query: {question}\n\nAgent Response:\n{answer}")
+    file_path = "/data/travel_plan.pdf"
+    pdf.output(file_path)
+    return file_path
+
+if api_key:
+    os.environ["OPENAI_API_KEY"] = api_key
+    query = st.text_input("Ask Your Travel Question")
+
+    if query:
+        # LLMS and Tools
+        llm = OpenAI(temprature=0)
+        wikipedia = WikipediaAPIWrapper()
+        math_chain = LLMMathChain(llm=llm)
+
+        tools = [
+            Tool(name="Wekipedia Search", func=wikipedia.run, description="useful for getting location or place details")
+            
+        ]
+
         
 
