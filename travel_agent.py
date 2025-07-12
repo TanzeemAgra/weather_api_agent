@@ -58,8 +58,10 @@ if api_key:
         math_chain = LLMMathChain(llm=llm)
 
         tools = [
-            Tool(name="Wekipedia Search", func=wikipedia.run, description="useful for getting location or place details")
-            
+            Tool(name="Wekipedia Search", func=wikipedia.run, description="useful for getting location or place details"),
+            Tool(name="Calculator", func=math_chain.run, description="Useful for doing travel budget calculations"),
+            Tool(name="Weather Info", func=get_weather, description="Get real-time weather information for a city")
+
         ]
 
         
