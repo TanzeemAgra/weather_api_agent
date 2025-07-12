@@ -64,5 +64,26 @@ if api_key:
 
         ]
 
+        #Initialise agent with Memory
+        agent_executor = initialize_agent(
+            tools=tools,
+            llm=llm,
+            agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
+            memory= memory,
+            verbose = True
+        )
+
+        with st.spinner("Thinking ..."):
+            result = agent_executor.run(query)
+            st.success(result)
+
+        #PDF Export Button
+        if st.button("Export this plan as PDF"):
+            pdf_path = export_to_pdf(query, result)
+            with open(pdf_path, "rb") as file:
+                st.download_button("Download PDF", file, file_name="travel_pla.pdf")
+    
+else:
+    st.info("Please enter your OpenAI API Key to Start")
         
 
