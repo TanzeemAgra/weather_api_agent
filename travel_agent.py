@@ -27,4 +27,15 @@ def get_weather(location):
         return "weather API Key not provided."
     try:
         url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={weather_api_key}&units=metric"
+        response = requests.get(url).json()
+        if response.get("main"):
+            temp = response["main"]["temp"]
+            desc = response["whether"][0]["describtion"]
+            return f"The current weather in {location} is {temp}°C with {desc}."
+        else:
+            return "Couldn't fetach weather"
+    except Exception as e:
+        return f"Error fetching weather: {e}"
+    
+        
 
